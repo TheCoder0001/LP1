@@ -1,0 +1,117 @@
+🟩 BLOCK A — If your Python is 3.8 (BEST — ALL 4 CODES WORK)
+# CLEAN OLD PACKAGES
+pip uninstall -y mediapipe tensorflow deepface numpy opencv-python opencv-contrib-python protobuf matplotlib pandas tqdm gdown ffmpeg-python
+pip cache purge
+
+# SYSTEM PACKAGES
+sudo apt update
+sudo apt install -y ffmpeg libsm6 libxext6 python3-pip python3-venv
+
+# VIRTUAL ENV (optional)
+python3 -m venv hci_env
+source hci_env/bin/activate
+
+# UPGRADE PIP
+pip install --upgrade pip
+
+# HAND GESTURE
+pip install "numpy<2" opencv-python mediapipe==0.10.9
+
+# EMOTION DETECTION
+pip install "numpy<2" tensorflow==2.14.0 deepface matplotlib pandas tqdm gdown
+
+# RUN SCRIPTS
+python3 handgesture.py
+python3 handgesturecam.py
+python3 emo.py
+python3 emousingcam.py
+
+
+
+
+
+
+🟦 BLOCK B — If your Python is 3.10 (BEST — ALL 4 CODES WORK)
+# CLEAN OLD PACKAGES
+pip uninstall -y mediapipe tensorflow deepface numpy opencv-python opencv-contrib-python protobuf matplotlib pandas tqdm gdown ffmpeg-python
+pip cache purge
+
+# SYSTEM PACKAGES
+sudo apt update
+sudo apt install -y ffmpeg libsm6 libxext6 python3-pip python3-venv
+
+# VIRTUAL ENV (optional)
+python3 -m venv hci_env
+source hci_env/bin/activate
+
+# UPGRADE PIP
+pip install --upgrade pip
+
+# HAND GESTURE LIBRARIES
+pip install "numpy<2" opencv-python mediapipe==0.10.9
+
+# EMOTION DETECTION LIBRARIES
+pip install "numpy<2" tensorflow==2.14.0 deepface matplotlib pandas tqdm gdown
+
+# RUN SCRIPTS
+python3 handgesture.py
+python3 handgesturecam.py
+python3 emo.py
+python3 emousingcam.py
+
+
+
+🟥 BLOCK D — If your Python is 3.12 (ONLY HAND GESTURE WILL WORK)
+
+❌ TensorFlow NOT supported
+❌ DeepFace NOT supported
+
+# CLEAN OLD PACKAGES
+pip uninstall -y mediapipe numpy opencv-python opencv-contrib-python protobuf
+pip cache purge
+
+# SYSTEM PACKAGES
+sudo apt update
+sudo apt install -y ffmpeg libsm6 libxext6 python3-pip python3-venv
+
+# VIRTUAL ENV
+python3 -m venv hci_env
+source hci_env/bin/activate
+
+# UPGRADE PIP
+pip install --upgrade pip
+
+# HAND GESTURE ONLY
+pip install "numpy<2" opencv-python mediapipe==0.10.9
+
+# RUN ONLY THESE SCRIPTS
+python3 handgesture.py
+python3 handgesturecam.py
+
+
+
+
+
+
+⭐ HOW TO INSTALL PYTHON 3.10 (FULL COMMAND BLOCK)
+
+Copy–paste this exact block into your Ubuntu terminal:
+
+# 1️⃣ Update Ubuntu
+sudo apt update && sudo apt upgrade -y
+
+# 2️⃣ Install tools
+sudo apt install -y software-properties-common curl
+
+# 3️⃣ Add official Deadsnakes PPA (source of Python 3.10)
+sudo add-apt-repository ppa:deadsnakes/ppa -y
+
+# 4️⃣ Install Python 3.10 + venv + distutils
+sudo apt install -y python3.10 python3.10-venv python3.10-distutils
+
+# 5️⃣ Install pip for Python 3.10
+curl -sS https://bootstrap.pypa.io/get-pip.py | sudo python3.10
+
+# 6️⃣ Check installation
+python3.10 --version
+pip3.10 --version
