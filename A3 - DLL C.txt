@@ -1,0 +1,36 @@
+Write a program to create Dynamic Link Library for any mathematical operation and write an application program to test it. (Java Native Interface / Use VB or VC++).
+
+#include <jni.h>3
+#include <stdio.h>
+#include "A3.h"
+
+// NOTE: The contents of this file can be referenced from A3.h which is the generated header file
+// Refer explanation for more info: https://git.kska.io/sppu-te-comp-content/SystemsProgrammingAndOperatingSystem/src/branch/main/Codes/Group%20A/Assignment-A3/EXPLANATION.md
+
+JNIEXPORT jint JNICALL Java_A3_add(JNIEnv *env, jobject obj, jint a, jint b) { // Function for addition
+    jint result = a + b;
+    printf("\n%d + %d = %d\n", a, b, result);
+    return result; // Return the result
+}
+
+JNIEXPORT jint JNICALL Java_A3_sub(JNIEnv *env, jobject obj, jint a, jint b) { // Function for subtraction
+    jint result = a - b;
+    printf("\n%d - %d = %d\n", a, b, result);
+    return result; // Return the result
+}
+
+JNIEXPORT jint JNICALL Java_A3_mul(JNIEnv *env, jobject obj, jint a, jint b) { // Function for multiplication
+    jint result = a * b;
+    printf("\n%d * %d = %d\n", a, b, result);
+    return result; // Return the result
+}
+
+JNIEXPORT jint JNICALL Java_A3_div(JNIEnv *env, jobject obj, jint a, jint b) {  // Function for division
+    if (b == 0) {
+        printf("Error: Division by zero.\n");
+        return 0; // Return 0 or handle error appropriately
+    }
+    jint result = a / b;
+    printf("\n%d / %d = %d\n", a, b, result);
+    return result; // Return the result
+}

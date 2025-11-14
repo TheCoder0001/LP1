@@ -1,0 +1,71 @@
+Write a program to create Dynamic Link Library for any mathematical operation and write an application program to test it. (Java Native Interface / Use VB or VC++).
+
+// Importing basic stuff
+import java.io.*; // Used for I/O operations
+import java.util.*; // Contains basic utilities
+
+class A3 {
+  // Class name has to be same as file name for Java
+
+  static {
+    // Used for loading the .so (on Linux) or .dll (on Windows) file when running
+    // This is the main so called "dynamic library"
+    System.loadLibrary("A3");
+  }
+
+  // Function declaration
+  // private indicates the function is private, duh!
+  // Use of native indicates the function body will be written in a language other than Java, such as C/C++
+  private native int add(int a, int b); // For addition
+  private native int sub(int a, int b); // For subtraction
+  private native int mul(int a, int b); // For multiplication
+  private native int div(int a, int b); // For division
+
+  public static void main(String[] args) { // the main function
+    Scanner sc = new Scanner(System.in); // For taking input
+
+    int a, b;// Declaring variables for calculation
+    int choice = 0; // Declaring variable for switch-case
+
+    // Take input for a and b values
+    System.out.print("\nValue of a:\t");
+    a = sc.nextInt();
+    System.out.print("\nValue of b:\t");
+    b = sc.nextInt();
+
+    // Main menu
+    while (true) {
+      System.out.println("----- MAIN MENU -----");
+      System.out.println("1 -> Addition");
+      System.out.println("2 -> Subtraction");
+      System.out.println("3 -> Multiplication");
+      System.out.println("4 -> Division");
+      System.out.println("5 -> Exit");
+      System.out.println("Choose an option:\t");
+      choice = sc.nextInt();
+
+      switch (choice) {
+      	case 1:
+          System.out.println("Result: " + new A3().add(a, b));
+          break;
+				case 2:
+	  			System.out.println("Result: " + new A3().sub(a, b));
+	  			break;
+				case 3:
+	  			System.out.println("Result: " + new A3().mul(a, b));
+	  			break;
+				case 4:
+					System.out.println("Result: " + new A3().div(a, b));
+					break;
+				case 5:
+					System.out.println("## END OF CODE");
+					System.exit(0);
+				default:
+					System.out.println("Please choose a valid option.");
+					break;
+      }
+    }
+  }
+}
+
+//javac -h . A3.java

@@ -1,0 +1,87 @@
+Write a program to simulate CPU Scheduling Algorithms: FCFS, SJF (Preemptive), Priority (Non-Preemptive) and Round Robin (Preemptive)
+
+
+#include <iostream>
+using namespace std;
+
+struct sjf{
+    int id, arr, bur, comp, turn, wait, orgBur;
+};
+sjf meh[30];
+
+class SJF{
+public:
+    int n;
+    void getIn()
+    {
+        cout<<"Enter number of processes: ";
+        cin>>n;
+        for(int i = 0; i < n; i++){
+            cout<<"\nEnter arrival time for process "<<i<<": ";
+            cin>>meh[i].arr;
+            cout<<"Enter burst time for process "<<i<<": ";
+            cin>>meh[i].bur;
+            meh[i].orgBur = meh[i].bur;
+            meh[i].id = i;
+        }
+    }
+
+    void process()
+    {
+        int k = 0;
+        int completed = 0;
+        cout<<"\nSequence of processes is: ";
+        while(completed < n){
+            int burst = 999;
+            int idd = -1;
+            for(int i = 0; i < n; i++){
+                if(meh[i].arr <= k && meh[i].bur > 0){ 
+                    if(meh[i].bur < burst){
+                        burst = meh[i].bur;
+                        idd = i;
+                    }
+                }
+            }
+            if(idd != -1){
+                cout<<"P"<<idd<<" ";
+                k++;
+                meh[idd].bur--;
+                if(meh[idd].bur == 0){
+                    meh[idd].comp = k;
+                    meh[idd].turn = meh[idd].comp - meh[idd].arr;
+                    meh[idd].wait = meh[idd].turn - meh[idd].orgBur;
+                    completed++;
+                }
+            } else{
+                k++;
+            }
+        }
+    }
+
+    void display()
+    {
+        double turn = 0, comp = 0, wait = 0;
+        cout<<"\n     Completed | Waiting | Turnaround |";
+        for(int i = 0; i < n; i++){
+            turn += meh[i].turn;
+            wait += meh[i].wait;
+            comp += meh[i].comp;
+            cout<<"\nP"<<i<<"|  "<<meh[i].comp<<"  |  "<<meh[i].wait<<"  |  "<<meh[i].turn;
+        }
+
+        cout<<"\n\nAvg completion time: "<<comp/n;
+        cout<<"\nAvg turnaround time: "<<turn/n;
+        cout<<"\nAvg waiting time: "<<wait/n;
+    }
+};
+
+int main()
+{
+    SJF ob;
+    ob.getIn();
+    ob.process();
+    ob.display();
+    return 0;
+}
+
+// 4 0 8 1 4 2 9 3 5

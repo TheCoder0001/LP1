@@ -1,0 +1,146 @@
+//Write a program to simulate Page replacement algorithm. 1.Least Recently Used (LRU) 2. Optimal algorithm.
+
+// Assignment-B7 - Page Replacement in C++ (LRU + Optimal)
+// BEGINNING OF CODE
+#include <cmath>
+#include <complex>
+#include <iostream>
+using namespace std;
+
+int refString[] = {0, 2, 1, 6, 4, 0, 1, 0, 3, 1, 2, 1};
+int window = 0, hit = 0, miss = 0, currentPages[4], lastUsed[40];
+int len = sizeof(refString) / sizeof(refString[0]);
+
+int findLRU() {
+  int min_index = 0;
+  for (int i=1; i<window; i++) {
+    if (lastUsed[i] < lastUsed[min_index]) {
+      min_index = i;
+    }
+  }
+  return min_index;
+}
+
+void LRU() {
+  for (int i=0; i<window; i++) {
+    currentPages[i] = -1;
+    lastUsed[i] = -1;
+  }
+
+  for (int i=0; i<len; i++) {
+    bool hitFlag = false;
+    for (int j=0; j<window; j++) {
+      if (currentPages[j] == refString[i]) {
+        hit++;
+        hitFlag = true;
+        lastUsed[j] = i;
+        break;
+      }
+    }
+    if (hitFlag == false) {
+      miss++;
+      bool emptyFound = false;
+      for (int j=0; j<window; j++) {
+        if (currentPages[j] == -1) {
+          emptyFound = true;
+          currentPages[j] = refString[i];
+          lastUsed[j] = i;
+          break;
+        }
+      }
+        if (emptyFound == false) {
+          int lru_index = findLRU();
+          currentPages[lru_index] = refString[i];
+          lastUsed[lru_index] = i;
+        }
+      }
+  }
+  cout<<endl<<"----- LRU ------";
+  cout<<endl<<"Number of hits: "<<hit;
+  cout<<endl<<"Number of misses: "<<miss;
+}
+
+int findOptimal(int current_index) {
+  int max_index = -1, farthest = current_index;
+  for (int i=0; i<window; i++) {
+    int j;
+    for (j=current_index+1; j<len; j++) {
+      if (currentPages[i] == refString[j]) {
+        if (j > farthest) {
+          farthest = j;
+          max_index = i;
+        }
+        break;
+      }
+    }
+    if (j == len) {
+      return i;  // Not used again — replace it
+    }
+  }
+  return max_index;
+}
+
+void Optimal() {
+  hit = 0;
+  miss = 0;
+
+  for (int i=0; i<window; i++) {
+    currentPages[i] = -1;
+  }
+
+  for (int i=0; i<len; i++) {
+    bool hitFlag = false;
+    for (int j=0; j<window; j++) {
+      if (currentPages[j] == refString[i]) {
+        hit++;
+        hitFlag = true;
+        break;
+      }
+    }
+    if (hitFlag == false) {
+      miss++;
+      bool emptyFound = false;
+      for (int j=0; j<window; j++) {
+        if (currentPages[j] == -1) {
+          emptyFound = true;
+          currentPages[j] = refString[i];
+          break;
+        }
+      }
+      if (emptyFound == false) {
+        int optimal_index = findOptimal(i);
+        currentPages[optimal_index] = refString[i];
+      }
+    }
+  }
+  cout<<endl<<"----- OPTIMAL -----";
+  cout<<endl<<"Number of hits: "<<hit;
+  cout<<endl<<"Number of misses: "<<miss;
+}
+
+void display() {
+  cout<<endl<<"Current pages are:\t";
+  for (int i=0; i<window; i++) {
+    cout<<currentPages[i]<<" ";
+  }
+  cout<<endl;
+}
+
+int main() {
+  cout<<endl<<"Enter window size:\t";
+  cin>>window;
+  LRU();
+  display();
+  Optimal();
+  display();
+}
+// END OF CODE
+//3
+
+
+window: The number of frames in memory (you’ll input this).
+hit: Number of page hits (when a requested page is already in memory).
+miss: Number of page misses (when a new page must be loaded).
+currentPages[]: Stores the current pages in memory.
+lastUsed[]: Stores the index of when each page was last used (for LRU).
+len: Length of the reference string.

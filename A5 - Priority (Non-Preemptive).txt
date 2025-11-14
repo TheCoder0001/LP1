@@ -1,0 +1,107 @@
+Write a program to simulate CPU Scheduling Algorithms: FCFS, SJF (Preemptive), Priority (Non-Preemptive) and Round Robin (Preemptive)
+
+
+
+#include<iostream>
+#include<limits.h> // for INT_MAX
+using namespace std;
+
+struct sjf {
+    int burst, arrival, id, completion, waiting, turnaround, response, priority;
+    bool active;
+};
+
+sjf meh[30];
+
+class lesgo {
+public:
+    int n;
+
+    void priorityIn() {
+        cout << "\nEnter number of processes: ";
+        cin >> n;
+        for (int i = 1; i <= n; i++) {
+            cout << "\nEnter arrival time of P" << i << ": ";
+            cin >> meh[i].arrival;
+            cout << "\nEnter burst time of P" << i << ": ";
+            cin >> meh[i].burst;
+            cout << "\nEnter priority of P" << i << ": ";
+            cin >> meh[i].priority;
+            meh[i].id = i;
+            meh[i].active = false;
+        }
+        cout << "\n  | Arrival | Burst | Priority\n";
+        for (int j = 1; j <= n; j++) {
+            cout << "P" << j << " | " << meh[j].arrival << "       | " << meh[j].burst << " | " << meh[j].priority << "\n";
+        }
+    }
+
+    void priorityProcess() {
+        int k = 0; // Current time
+        int completed = 0; // Number of completed processes
+
+        while (completed < n) {
+            int highestPriority = INT_MAX;
+            int selectedProcess = -1;
+
+            // Find the process with the highest priority (smallest priority number) that has arrived and is not completed
+            for (int i = 1; i <= n; i++) {
+                if (meh[i].arrival <= k && !meh[i].active && meh[i].priority < highestPriority) {
+                    highestPriority = meh[i].priority;
+                    selectedProcess = i;
+                }
+            }
+
+            if (selectedProcess != -1) {
+                // Mark the process as active
+                meh[selectedProcess].active = true;
+
+                // If the process is starting now, calculate response time
+                if (meh[selectedProcess].response == 0) {
+                    meh[selectedProcess].response = k - meh[selectedProcess].arrival;
+                }
+
+                // Execute the process
+                k += meh[selectedProcess].burst;
+                meh[selectedProcess].completion = k;
+                meh[selectedProcess].turnaround = meh[selectedProcess].completion - meh[selectedProcess].arrival;
+                meh[selectedProcess].waiting = meh[selectedProcess].turnaround - meh[selectedProcess].burst;
+
+                completed++;
+            } else {
+                // If no process is ready to run, just increment time
+                k++;
+            }
+        }
+    }
+
+    void displayMetrics() {
+        double totalWaiting = 0, totalTurnaround = 0, totalCompletion = 0;
+
+        cout << "\n\n  | Completion time | Waiting time | Turnaround time | Response time\n";
+        for (int j = 1; j <= n; j++) {
+            totalWaiting += meh[j].waiting;
+            totalTurnaround += meh[j].turnaround;
+            totalCompletion += meh[j].completion;
+            cout << "P" << j << " | " << meh[j].completion
+                 << "             | " << meh[j].waiting
+                 << "             | " << meh[j].turnaround
+                 << "             | " << meh[j].response << "\n";
+        }
+
+        cout << "\nAverage completion time: " << totalCompletion / n;
+        cout << "\nAverage waiting time: " << totalWaiting / n;
+        cout << "\nAverage turnaround time: " << totalTurnaround / n;
+    }
+};
+
+int main() {
+    lesgo obj;
+    obj.priorityIn();
+    obj.priorityProcess();
+    obj.displayMetrics();
+    return 0;
+}
+
+
+//4 0 8 3 1 4 1 2 9 4 3 5 2

@@ -1,0 +1,100 @@
+Write a Java/C++ program to simulate memory placement strategies 1. First Fit 2. Best Fit 3. Worst Fit 4. Next Fit
+
+#include <iostream>
+using namespace std;
+
+int blocks[] = {100, 500, 200, 300, 600};
+int processes[] = {212, 417, 112, 426};
+int blkSize = sizeof(blocks) / sizeof(blocks[0]);
+int prSize = sizeof(processes) / sizeof(processes[0]);
+
+void FirstFit() {
+  cout<<endl<<"FIRST FIT:";
+  for (int i=0; i<prSize; i++) {
+      bool check = false;
+    for(int j=0; j<blkSize; j++) {
+      if ((blocks[j] - processes[i] >= 0)) {
+        blocks[j] -= processes[i];
+        check = true;
+        cout<<endl<<"Process "<<processes[i]<<" has been allocated to block "<<j+1;
+        break;
+      }
+    }
+    if (check == false) {
+      cout<<endl<<"Process "<<processes[i]<<" has not been allocated.";
+    }
+  }
+}
+
+void NextFit() {
+  int j = 0;
+  cout<<endl<<"NEXT FIT:";
+  for (int i=0; i<prSize; i++) {
+    bool check = false;
+    for (int k=0; k<blkSize; k++) {
+      if ((blocks[j] - processes[i]) >= 0) {
+        blocks[j] = blocks[j] - processes[i];
+        cout<<endl<<"Process "<<processes[i]<<" has been allocated to block "<<j+1;
+        check = true;
+        break;
+      }
+      j = (j + 1) % blkSize; //wrap around
+    }
+    if (check == false) {
+      cout<<endl<<"Process "<<processes[i]<<" has not been allocated.";
+    }
+  }
+}
+
+void BestFit() {
+  cout<<endl<<"BEST FIT:";
+  for (int i=0; i<prSize; i++) {
+    bool check = false;
+    int k, store = 999;
+    for (int j=0; j<blkSize; j++) {
+      if ((blocks[j] - processes[i]) >= 0 && (blocks[j] - processes[i]) < store) {
+        k = j + 1;
+        store = blocks[j] - processes[i];
+        check = true;
+      }
+    }
+    if (check == false) {
+      cout<<endl<<"Process "<<processes[i]<<" was not allocated to any block.";
+    }
+    else {
+      blocks[k - 1] -= processes[i];
+      cout<<endl<<"Process "<<processes[i]<<" was allocated to block "<<k;
+    }
+  }
+}
+
+void WorstFit() {
+  cout<<endl<<"WORST FIT:";
+  for (int i=0; i<prSize; i++) {
+    bool check = false;
+    int k, store = -1;
+    for (int j=0; j<blkSize; j++) {
+      if ((blocks[j] - processes[i] >= 0 && (blocks[j] - processes[i] > store))) {
+        k = j + 1;
+        store = blocks[j] - processes[i];
+        check = true;
+      }
+    }
+    if (check == false) {
+      cout<<endl<<"Process "<<processes[i]<<" was not allocated to any block.";
+    }
+    else {
+    blocks[k - 1] -= processes[i];
+    cout<<endl<<"Process "<<processes[i]<<" was allocated to block "<<k;
+    }
+  }
+}
+
+int main () {
+  // ONLY RUN ONE FUNCTION AT A TIME.
+  // FirstFit();
+  // NextFit();
+  BestFit();
+  // WorstFit();
+  return 0;
+}

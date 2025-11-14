@@ -1,0 +1,95 @@
+Write a program to simulate CPU Scheduling Algorithms: FCFS (Non-Preemptive), SJF (Preemptive), Priority (Non-Preemptive) and Round Robin (Preemptive)
+
+
+#include<iostream>
+using namespace std;
+
+struct fcfs
+{
+    int burst, arrival, id, completion, waiting, turnaround, response; 
+};
+fcfs meh[30];
+
+class FCFS
+{
+public:
+    int n;
+    void fcfsIn(){
+        cout<<"\nEnter number of processes: ";
+        cin>>n;
+        for(int i = 0; i < n; i++){
+            cout<<"\nEnter arrival time of P"<<i<<": ";
+            cin>>meh[i].arrival;
+            cout<<"\nEnter burst time of P"<<i<<": ";
+            cin>>meh[i].burst;
+            meh[i].id = i;
+        }
+        cout<<"\n  | Arrival | Burst\n";
+        for(int j = 0; j < n; j++) {
+            cout<<"P"<<j<<"| "<<meh[j].arrival<<"       | "<<meh[j].burst<<"\n";
+        }
+    }
+
+    void process() {
+        cout<<"\nSequence of processes is: ";
+        int currentTime = 0;
+
+        for(int i = 0; i < n; i++){
+            if(currentTime < meh[i].arrival){
+                while(currentTime < meh[i].arrival){
+                    cout<<" NULL ";
+                    currentTime++;
+                }
+            }
+
+            meh[i].response = currentTime - meh[i].arrival;
+            cout<<"P"<<meh[i].id<<" ";
+            currentTime += meh[i].burst;
+            meh[i].completion = currentTime;
+            meh[i].turnaround = meh[i].completion - meh[i].arrival;
+            meh[i].waiting = meh[i].turnaround - meh[i].burst;
+        }
+    }
+
+    void displayMetrics()
+    {
+        double totalWaiting = 0, totalTurnaround = 0, totalCompletion = 0;
+
+        cout<<"\n\n  | Completion time | Waiting time | Turnaround time | Response time\n";
+        for(int j = 0; j < n; j++) {
+            totalWaiting += meh[j].waiting;
+            totalTurnaround += meh[j].turnaround;
+            totalCompletion += meh[j].completion;
+            cout<<"P"<<j<<"| "<<meh[j].completion
+                <<"             | "<<meh[j].waiting
+                <<"             | "<<meh[j].turnaround
+                <<"             | "<<meh[j].response<<"\n";
+        }
+
+        cout<<"\nAverage completion time: "<<totalCompletion/n;
+        cout<<"\nAverage waiting time: "<<totalWaiting/n;
+        cout<<"\nAverage turnaround time: "<<totalTurnaround/n;
+    }
+};
+
+int main()
+{
+    FCFS obj;
+    obj.fcfsIn();
+    obj.process();
+    obj.displayMetrics();
+    return 0;
+}
+
+
+
+
+burst: how long the process takes (CPU time needed)
+arrival: when the process arrives
+id: process number (P0, P1, P2, etc.)
+completion: time when process finishes execution
+waiting: time process waited before getting CPU
+turnaround: total time from arrival to completion
+response: time from arrival to first CPU response
+
+//input : 4 0 5 1 3 2 8 3 6
