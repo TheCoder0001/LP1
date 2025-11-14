@@ -1,0 +1,23 @@
+#include <jni.h>
+#include <math.h>
+
+extern "C" {
+
+JNIEXPORT jdouble JNICALL Java_MathOperations_power(JNIEnv*, jobject, jdouble base, jdouble exp) {
+    return pow(base, exp);
+}
+
+JNIEXPORT jlong JNICALL Java_MathOperations_factorial(JNIEnv*, jobject, jint n) {
+    if (n < 0) return -1;
+    if (n == 0) return 1;
+    jlong res = 1;
+    for (jint i = 1; i <= n; i++) res *= i;
+    return res;
+}
+
+JNIEXPORT jdouble JNICALL Java_MathOperations_squareroot(JNIEnv*, jobject, jdouble x) {
+    if (x < 0) return -1;
+    return sqrt(x);
+}
+
+}
